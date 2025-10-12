@@ -360,41 +360,57 @@
         #             right -= 1
         # return result   
 ###################################################################
-class Solution:
-    def threeSumClosest(self, nums: list[int], target: int) -> int:
-        nums.sort()
-        print(nums)
-        result =[]
-        diff=[]
-        for i in range(len(nums)-2):
-            if i > 0 and nums[i] == nums[i-1]:
-                continue
-            print("nums",nums[i],nums[i+1],nums[i+2])
-            temp = nums[i] + nums[i+1] +nums[i+2]
-            print("temp",temp)
-            diff.append(abs(temp - target))
-            if min(diff)== 0:
-                return nums[i] + nums[i+1] + nums[i+2]
-            result = nums[diff.index(min(diff))] + nums[diff.index(min(diff))+1] + nums[diff.index(min(diff))+2]
-            print("diff:",diff)
-            print(nums[diff.index(min(diff))] , nums[diff.index(min(diff))+1] , nums[diff.index(min(diff))+2])
+# class Solution:
+#     def threeSumClosest(self, nums: list[int], target: int) -> int:
+#         nums.sort()
+#         print(nums)
+#         result =[]
+#         diff=[]
+#         for i in range(len(nums)-2):
+#             if i > 0 and nums[i] == nums[i-1]:
+#                 continue
+#             print("nums",nums[i],nums[i+1],nums[i+2])
+#             temp = nums[i] + nums[i+1] +nums[i+2]
+#             print("temp",temp)
+#             diff.append(abs(temp - target))
+#             if min(diff)== 0:
+#                 return nums[i] + nums[i+1] + nums[i+2]
+#             result = nums[diff.index(min(diff))] + nums[diff.index(min(diff))+1] + nums[diff.index(min(diff))+2]
+#             print("diff:",diff)
+#             print(nums[diff.index(min(diff))] , nums[diff.index(min(diff))+1] , nums[diff.index(min(diff))+2])
 
-        if result == []:
-            result = nums[0] + nums[1] + nums[2]
-        print("result",result)
+#         if result == []:
+#             result = nums[0] + nums[1] + nums[2]
+#         print("result",result)
 
-        return result 
+#         return result 
     
+# if __name__ == "__main__":
+#     # input = [10,20,30,40,50,60,70,80,90]
+#     # input = [-1,2,1,-4]
+#     input = [4,0,5,-5,3,3,0,-4,-5]
+#     target = -2
+#     print(Solution().threeSumClosest(input,target))
+
+
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        if n == 1:
+            return "1"
+        final = []
+        result = ""
+        count = 1
+        final = self.countAndSay(n - 1)
+
+        for i in range(1, len(final)):
+            if final[i] == final[i - 1]:
+                count += 1
+            else:
+                result += str(count) + final[i - 1]
+                count = 1
+        result += str(count) + final[-1]
+        return result
+
 if __name__ == "__main__":
-    # input = [10,20,30,40,50,60,70,80,90]
-    # input = [-1,2,1,-4]
-    input = [4,0,5,-5,3,3,0,-4,-5]
-    target = -2
-    print(Solution().threeSumClosest(input,target))
-
-
-        
-
-        
-           
-
+    n = 10
+    print(Solution().countAndSay(n))
