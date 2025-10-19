@@ -393,24 +393,113 @@
 #     print(Solution().threeSumClosest(input,target))
 
 
-class Solution:
-    def countAndSay(self, n: int) -> str:
-        if n == 1:
-            return "1"
-        final = []
-        result = ""
-        count = 1
-        final = self.countAndSay(n - 1)
+# class Solution:
+#     def countAndSay(self, n: int) -> str:
+#         if n == 1:
+#             return "1"
+#         final = []
+#         result = ""
+#         count = 1
+#         final = self.countAndSay(n - 1)
 
-        for i in range(1, len(final)):
-            if final[i] == final[i - 1]:
-                count += 1
-            else:
-                result += str(count) + final[i - 1]
-                count = 1
-        result += str(count) + final[-1]
-        return result
+#         for i in range(1, len(final)):
+#             if final[i] == final[i - 1]:
+#                 count += 1
+#             else:
+#                 result += str(count) + final[i - 1]
+#                 count = 1
+#         result += str(count) + final[-1]
+#         return result
+
+# if __name__ == "__main__":
+#     n = 10
+#     print(Solution().countAndSay(n))
+
+# class Solution:
+#     def longestConsecutive(self, nums: list[int]) -> int:
+#         s = set(nums)
+#         best = 0
+#         print("s:",s)
+#         for x in s:
+#             if x - 1 not in s:        # start of a sequence
+#                 y = x
+#                 print("x,y",x,y)
+#                 while y in s:
+#                     y += 1
+#                 best = max(best, y - x)
+#         print(best)
+#         return best
+            
+
+
+# if __name__ == "__main__":
+#     nums = [100,4,200,1,3,2]
+#     print(Solution().longestConsecutive(nums))
+
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional["ListNode"] = None) -> None:
+        self.val = val
+        self.next = next
+
+
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        Reorders the list L0 → L1 → … → Ln-1 → Ln into L0 → Ln → L1 → Ln-1 …
+        """
+        if not head or not head.next:
+            return
+
+        # Find end of the first half using slow/fast pointers
+        slow, fast = head, head
+        while fast and fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Reverse the second half starting after the midpoint
+        second = slow.next
+        slow.next = None
+        prev, curr = None, second
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+
+        # Merge the two halves: first (head) and second (prev, reversed)
+        first, second = head, prev
+        while second:
+            tmp1 = first.next
+            tmp2 = second.next
+            first.next = second
+            second.next = tmp1
+            first = tmp1
+            second = tmp2
+
+
+def _build_linked_list(values: list[int]) -> Optional[ListNode]:
+    dummy = ListNode()
+    tail = dummy
+    for value in values:
+        tail.next = ListNode(value)
+        tail = tail.next
+    return dummy.next
+
+
+def _linked_list_to_list(head: Optional[ListNode]) -> list[int]:
+    result: list[int] = []
+    current = head
+    while current:
+        result.append(current.val)
+        current = current.next
+    return result
+
 
 if __name__ == "__main__":
-    n = 10
-    print(Solution().countAndSay(n))
+    head = _build_linked_list([1, 2, 3, 4, 5])
+    Solution().reorderList(head)
+    print(_linked_list_to_list(head))
